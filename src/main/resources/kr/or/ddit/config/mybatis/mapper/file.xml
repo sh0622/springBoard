@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+
+	<!-- 게시판 번호에 맞는 파일리스트 -->
+	<select id="getFileList" resultType="FileVo" parameterType="int">
+		SELECT *
+		  FROM filetable
+		WHERE pt_no = #{pt_no}
+	</select>
+	
+	 <insert id="insertFile" parameterType="FileVo">
+	  	INSERT INTO filetable
+	  		VALUES(file_no_sequence.nextval
+	  					, #{pt_no}
+	  					, #{upload_name}
+	  					, #{file_route}
+	  					, #{file_name}
+	  					, sysdate)
+	  </insert>
+	  
+	  <select id="getFileCnt" resultType="int" parameterType="int">
+		  SELECT count(*) FROM filetable
+		  WHERE pt_no = #{pt_no}
+	  </select>
+  
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+	<select id="getMemBoardList" resultType="boardVo">
+		SELECT *
+		  FROM board
+		 ORDER BY bd_no
+	</select>
+	 
+	<!-- 게시판 추가 -->
+	<insert id="insertBoard" parameterType="boardVo">
+		INSERT INTO board(bd_no
+						, id
+						, bd_name
+						, bd_ck
+						, bd_date)
+				VALUES (bd_no_sequence.nextval
+						, #{id}
+						, #{bd_name}
+						, 1
+						, sysDate)
+	</insert>
+	 
+	<!-- 게시판 비활성화 bd_ck 가 0이면  -->
+	<update id="offBoard" parameterType="boardVo">
+		UPDATE board SET bd_ck = #{bd_ck}
+						,bd_name = #{bd_name}
+					WHERE bd_no = #{bd_no}
+	</update>
+	
+	<select id="getBdNoVo" parameterType="int" resultType="boardVo">
+		SELECT *
+			  FROM board
+		WHERE bd_no = #{bd_no}
+	</select>
+  	
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+ 
+  <properties resource="kr/or/ddit/config/mybatis/db_dev.properties"/>
+  <!-- student.xml 에서 쓸 alias 명 설정 -->
+ <typeAliases>
+  	<typeAlias type="kr.or.ddit.student.model.StudentVo" alias="studentVo"/>
+  	<typeAlias type="kr.or.ddit.board.model.BoardVo" alias="boardVo"/>
+  	<typeAlias type="kr.or.ddit.post.model.PostVo" alias="postVo"/>
+  	<typeAlias type="kr.or.ddit.recomment.model.RecommentVo" alias="recommentVo"/>
+  	<typeAlias type="kr.or.ddit.file.model.FileVo" alias="fileVo"/>
+  </typeAliases>
+
+  <mappers>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/student.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/board.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/post.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/recomment.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/file.xml"/>
+  </mappers>
+</configuration>

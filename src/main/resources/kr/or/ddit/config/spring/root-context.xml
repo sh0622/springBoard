@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- service, dao scan : context:componentScan -->
+	<!-- 스캔된 클래스간  의존관계 설정(어노테이션이 쓰인곳과 연결시켜줌)-->
+	<context:annotation-config/>
+	<!-- base-package 하위에 있는것들을 찾아 bean 으로 등록함 -->
+	<!-- @Service, @Repositroy, @Contoller, @Componet -->
+	<context:component-scan base-package="kr.or.ddit" use-default-filters="false">
+	<!--  use-default-filters : 자동으로 연결해주는 무효화 -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<!-- expression : 패키지 경로 -->
+	</context:component-scan>
+
+
+</beans>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="post">
+
+  <select id="getPostList" resultType="postVo" parameterType="int">
+		SELECT *
+		  FROM post
+		 WHERE bd_no = #{bd_no}
+  </select> 
+  
+  <select id="getPostPageList" resultType="postVo" parameterType="map">
+		 SELECT pt_no,
+				       pt_title,
+				       std_id,
+				       pt_date,
+				       pt_remove,
+				       pt_seq,
+				       rn
+		  FROM
+		      (SELECT a.*
+		              , ROWNUM rn		  
+		         FROM (SELECT pt_no
+		                     , lpad('ㄴ', (level-1)*4, ' ') || pt_title as pt_title 
+		                     , (SELECT std_id
+		                         FROM student
+		                        WHERE id = p.id) as std_id 
+		                     , pt_date
+		                     , pt_remove
+		                     , pt_seq
+		                 FROM post p 
+		                WHERE bd_no = #{bd_no}
+		            START WITH pt_seq IS NULL 
+		      CONNECT BY PRIOR pt_no = pt_seq 
+		     ORDER SIBLINGS BY pt_group desc) a) 
+		WHERE rn BETWEEN (#{page}-1)*#{pageSize}+1 AND #{page}*#{pageSize}
+	
+  </select>
+  
+  <select id="getPostTotCnt" resultType="int" parameterType="int">
+  	SELECT count(*)
+  	  FROM post
+  	 WHERE bd_no = #{bd_no} 
+  </select>
+  
+  <select id="getPostDetailList" resultType="postVo" parameterType="int">
+		SELECT *
+		  FROM post
+		 WHERE pt_no = #{pt_no}
+  </select> 
+  
+  <insert id="insertPost" parameterType="postVo">
+  	INSERT INTO post
+  		VALUES(pt_no_sequence.nextval
+  					, #{bd_no}
+  					, #{id}
+  					, null
+  					, pt_no_sequence.nextval
+  					, #{pt_content}
+  					, #{pt_title}
+  					, sysdate
+  					, 0)
+  </insert>
+  
+  <update id="removePost" parameterType="postVo">
+  	UPDATE post SET pt_remove = 1
+  							, pt_title = '삭제된 게시물입니다'
+  				  WHERE pt_no = #{pt_no}
+  </update>  
+  
+  <update id="postUpdate" parameterType="postVo">
+  	UPDATE post SET pt_title = #{pt_title}
+  							 , pt_content = #{pt_content}
+  				  WHERE pt_no = #{pt_no}
+  </update>
+  
+   <update id="postChild" parameterType="postVo">
+  	INSERT INTO post
+  		VALUES(pt_no_sequence.nextval
+  					, #{bd_no}
+  					, #{id}
+  					, #{pt_seq}
+  					, #{pt_group}
+  					, #{pt_content}
+  					, #{pt_title}
+  					, sysdate
+  					, 0)
+  </update>
+  
+</mapper>
